@@ -7,21 +7,18 @@ import cv2
 from PIL import Image
 from tqdm import tqdm
 
-# Load the trained model
-model_path = './tmp_checkpoint/best_model.keras'
+# Load the trained ResNet model
+model_path = './tmp_checkpoint_resnet/best_resnet_model.keras'
 if not os.path.exists(model_path):
     raise FileNotFoundError(f"Model file not found at {model_path}. Please ensure the model is trained and saved correctly.")
-#model = load_model(model_path, custom_objects={'FixedDropout': tf.keras.layers.Dropout})
-model = load_model(model_path, custom_objects={
-    'FixedDropout': tf.keras.layers.Dropout,
-    'swish': tf.keras.activations.swish  # <-- Add this line
-})
+
+model = load_model(model_path)
 
 # Initialize MTCNN face detector
-face_detector = MTCNN(keep_all=True)
+face_detector = MTCNN(keep_all=True, device='cuda' if tf.config.list_physical_devices('GPU') else 'cpu')
 
 # Set input size
-input_size = 128
+input_size = 224  # Match ResNet input size
 
 # Create output folders for real and fake frames
 output_base_path = './output'
@@ -42,7 +39,7 @@ def detect_deepfake(video_path):
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise FileNotFoundError(f"Could not open video file at {video_path}. Please check the path and try again.")
-    
+
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_count = 0
     deepfake_count = 0
@@ -60,11 +57,11 @@ def detect_deepfake(video_path):
             frame_image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
             # Detect faces in the frame
-            faces, _ = face_detector.detect(frame_image)
-            if faces is not None:
-                for i, box in enumerate(faces):
-                    x, y, width, height = [int(coord) for coord in box]
-                    face_img = frame_image.crop((x, y, x + width, y + height))
+            boxes, _ = face_detector.detect(frame_image)
+            if boxes is not None:
+                for i, box in enumerate(boxes):
+                    x1, y1, x2, y2 = [int(coord) for coord in box]
+                    face_img = frame_image.crop((x1, y1, x2, y2))
 
                     # Preprocess the detected face
                     face_processed = preprocess_face(face_img)
@@ -73,7 +70,7 @@ def detect_deepfake(video_path):
                     prediction = model.predict(face_processed)[0][0]
 
                     # Threshold to classify as deepfake or real
-                    if prediction > 0.25:
+                    if prediction > 0.2:
                         label = 'DeepFake'
                         deepfake_count += 1
                         output_folder = fake_output_path
@@ -96,13 +93,13 @@ def detect_deepfake(video_path):
     print(f'Real Frames Detected: {real_count}')
     print(f'DeepFake Frames Detected: {deepfake_count}')
 
-    if (deepfake_count >= (0.75 * (real_count + deepfake_count))):
+    if deepfake_count > real_count:
         print('The video is likely a DeepFake.')
     else:
         print('The video is likely Real.')
 
 # Path to the video to be analyzed
-video_path = '/home/tmbennett2/DeepFake-Detection-Senior-Project/senior-project/Real-Tom-Cruise.mp4'
+video_path = '/home/tmbennett2/DeepFake-Detection-Senior-Project/senior-project/Biden2.mp4'
 
 # Run the DeepFake detection and save the frames
 detect_deepfake(video_path)

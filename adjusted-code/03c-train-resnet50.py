@@ -33,14 +33,14 @@ def get_filename_only(file_path):
     return filename_only
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import Xception
+from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.models import load_model
 
-input_size = 299  # Xception expects 299x299 input
+input_size = 224  # Updated for ResNet50
 batch_size_num = 16
 train_path = os.path.join(dataset_path, 'train')
 val_path = os.path.join(dataset_path, 'val')
@@ -94,25 +94,25 @@ test_generator = test_datagen.flow_from_directory(
 )
 
 # Train a CNN classifier
-xception_base = Xception(
+resnet_base = ResNet50(
     weights='imagenet',
     include_top=False,
     input_shape=(input_size, input_size, 3),
-    pooling='avg'
+    pooling='max'
 )
 
-xception_model = Sequential()
-xception_model.add(xception_base)
-xception_model.add(Dense(units = 512, activation = 'relu'))
-xception_model.add(Dropout(0.5))
-xception_model.add(Dense(units = 128, activation = 'relu'))
-xception_model.add(Dense(units = 1, activation = 'sigmoid'))
-xception_model.summary()
+resnet_model = Sequential()
+resnet_model.add(resnet_base)
+resnet_model.add(Dense(units = 512, activation = 'relu'))
+resnet_model.add(Dropout(0.5))
+resnet_model.add(Dense(units = 128, activation = 'relu'))
+resnet_model.add(Dense(units = 1, activation = 'sigmoid'))
+resnet_model.summary()
 
 # Compile model
-xception_model.compile(optimizer = Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
+resnet_model.compile(optimizer = Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy'])
 
-checkpoint_filepath = './tmp_checkpoint_xception'
+checkpoint_filepath = './tmp_checkpoint_resnet'
 print('Creating Directory: ' + checkpoint_filepath)
 os.makedirs(checkpoint_filepath, exist_ok=True)
 
@@ -124,7 +124,7 @@ custom_callbacks = [
         verbose = 1
     ),
     ModelCheckpoint(
-        filepath = os.path.join(checkpoint_filepath, 'best_xception_model.keras'),
+        filepath = os.path.join(checkpoint_filepath, 'best_resnet_model.keras'),
         monitor = 'val_loss',
         mode = 'min',
         verbose = 1,
@@ -134,7 +134,7 @@ custom_callbacks = [
 
 # Train network
 num_epochs = 100
-history = xception_model.fit(
+history = resnet_model.fit(
     train_generator,
     epochs = num_epochs,
     steps_per_epoch = len(train_generator),
@@ -145,7 +145,7 @@ history = xception_model.fit(
 print(history.history)
 
 # load the saved model that is considered the best
-best_model = load_model(os.path.join(checkpoint_filepath, 'best_xception_model.keras'))
+best_model = load_model(os.path.join(checkpoint_filepath, 'best_resnet_model.keras'))
 
 # Generate predictions
 test_generator.reset()
@@ -160,6 +160,4 @@ test_results = pd.DataFrame({
     "Prediction": preds.flatten()
 })
 print(test_results)
-
-
 
