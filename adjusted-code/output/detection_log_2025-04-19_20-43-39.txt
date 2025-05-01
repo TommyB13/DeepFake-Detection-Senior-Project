@@ -1,0 +1,135 @@
+
+Video: Biden-Cruise-Deepfake.mp4
+Threshold: 0.2
+Total frames analyzed: 3873
+Total faces detected: 3650
+Real frames detected: 3565
+Fake frames detected: 85
+Percent deepfake frames: 2.33%
+Conclusion: REAL
+
+Video: Biden-Cruise-Deepfake.mp4
+Threshold: 0.5
+Total frames analyzed: 3873
+Total faces detected: 3650
+Real frames detected: 3635
+Fake frames detected: 15
+Percent deepfake frames: 0.41%
+Conclusion: REAL
+
+Video: Biden-Cruise-Deepfake.mp4
+Threshold: 0.75
+Total frames analyzed: 3873
+Total faces detected: 3650
+Real frames detected: 3650
+Fake frames detected: 0
+Percent deepfake frames: 0.00%
+Conclusion: REAL
+
+Video: Deep-Tom-Cruise.mp4
+Threshold: 0.2
+Total frames analyzed: 4671
+Total faces detected: 4205
+Real frames detected: 3422
+Fake frames detected: 783
+Percent deepfake frames: 18.62%
+Conclusion: REAL
+
+Video: Deep-Tom-Cruise.mp4
+Threshold: 0.5
+Total frames analyzed: 4671
+Total faces detected: 4205
+Real frames detected: 3780
+Fake frames detected: 425
+Percent deepfake frames: 10.11%
+Conclusion: REAL
+
+Video: Deep-Tom-Cruise.mp4
+Threshold: 0.75
+Total frames analyzed: 4671
+Total faces detected: 4205
+Real frames detected: 3972
+Fake frames detected: 233
+Percent deepfake frames: 5.54%
+Conclusion: REAL
+
+Video: Biden2.mp4
+Threshold: 0.2
+Total frames analyzed: 5051
+Total faces detected: 5474
+Real frames detected: 3839
+Fake frames detected: 1635
+Percent deepfake frames: 29.87%
+Conclusion: REAL
+
+Video: Biden2.mp4
+Threshold: 0.5
+Total frames analyzed: 5051
+Total faces detected: 5474
+Real frames detected: 4492
+Fake frames detected: 982
+Percent deepfake frames: 17.94%
+Conclusion: REAL
+
+Video: Biden2.mp4
+Threshold: 0.75
+Total frames analyzed: 5051
+Total faces detected: 5474
+Real frames detected: 4933
+Fake frames detected: 541
+Percent deepfake frames: 9.88%
+Conclusion: REAL
+
+Video: Real-Tom-Cruise.mp4
+Threshold: 0.2
+Total frames analyzed: 2117
+Total faces detected: 2889
+Real frames detected: 798
+Fake frames detected: 2091
+Percent deepfake frames: 72.38%
+Conclusion: DEEPFAKE
+
+Video: Real-Tom-Cruise.mp4
+Threshold: 0.5
+Total frames analyzed: 2117
+Total faces detected: 2889
+Real frames detected: 1078
+Fake frames detected: 1811
+Percent deepfake frames: 62.69%
+Conclusion: DEEPFAKE
+
+Video: Real-Tom-Cruise.mp4
+Threshold: 0.75
+Total frames analyzed: 2117
+Total faces detected: 2889
+Real frames detected: 1372
+Fake frames detected: 1517
+Percent deepfake frames: 52.51%
+Conclusion: DEEPFAKE
+
+Video: Real-Tom-Cruise-2.mp4
+Threshold: 0.2
+Total frames analyzed: 1573
+Total faces detected: 2058
+Real frames detected: 1248
+Fake frames detected: 810
+Percent deepfake frames: 39.36%
+Conclusion: REAL
+
+Video: Real-Tom-Cruise-2.mp4
+Threshold: 0.5
+Total frames analyzed: 1573
+Total faces detected: 2058
+Real frames detected: 1504
+Fake frames detected: 554
+Percent deepfake frames: 26.92%
+Conclusion: REAL
+
+Video: Real-Tom-Cruise-2.mp4
+Threshold: 0.75
+Total frames analyzed: 1573
+Total faces detected: 2058
+Real frames detected: 1731
+Fake frames detected: 327
+Percent deepfake frames: 15.89%
+Conclusion: REAL
